@@ -21,7 +21,7 @@ public static class GiantsModHash
         if (string.IsNullOrWhiteSpace(filePath) || !File.Exists(filePath))
             throw new FileNotFoundException("File not found", filePath);
 
-        string baseName = customBaseName ?? Path.GetFileNameWithoutExtension(filePath);
+        var baseName = customBaseName ?? Path.GetFileNameWithoutExtension(filePath);
 
         using var md5 = MD5.Create();
         using var fs = new FileStream(
@@ -29,18 +29,15 @@ public static class GiantsModHash
             FileMode.Open,
             FileAccess.Read,
             FileShare.Read,
-            bufferSize: 81920,
-            useAsync: true);
+            81920,
+            true);
 
         var buffer = new byte[1024 * 1024]; // 1 MB buffer
         int read;
-        while ((read = await fs.ReadAsync(buffer, 0, buffer.Length)) > 0)
-        {
-            md5.TransformBlock(buffer, 0, read, null, 0);
-        }
+        while ((read = await fs.ReadAsync(buffer, 0, buffer.Length)) > 0) md5.TransformBlock(buffer, 0, read, null, 0);
 
         // Append the baseName bytes
-        byte[] tail = Encoding.UTF8.GetBytes(baseName);
+        var tail = Encoding.UTF8.GetBytes(baseName);
         md5.TransformFinalBlock(tail, 0, tail.Length);
 
         return BitConverter.ToString(md5.Hash!).Replace("-", "").ToLowerInvariant();

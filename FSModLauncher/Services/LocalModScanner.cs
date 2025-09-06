@@ -15,7 +15,7 @@ public class LocalModScanner(LocalModCacheService cacheService)
         if (!Directory.Exists(modsFolder)) return localMods;
 
         var zipFiles = Directory.GetFiles(modsFolder, "*.zip", SearchOption.TopDirectoryOnly);
-        
+
         await cacheService.LoadCacheAsync();
         await cacheService.CleanupCacheAsync(zipFiles);
 
@@ -23,26 +23,29 @@ public class LocalModScanner(LocalModCacheService cacheService)
         var cachedCount = 0;
 
         foreach (var zipFile in zipFiles)
-            try {
+            try
+            {
                 var localMod = await ProcessZipFileAsync(zipFile, hashAlgorithm);
                 if (localMod == null) continue;
-                
+
                 localMods.Add(localMod);
                 processedCount++;
-                    
+
                 // Check if this was from cache
                 var fileInfo = new FileInfo(zipFile);
                 var cacheEntry = cacheService.GetCacheEntry(zipFile);
                 if (cacheEntry != null && LocalModCacheService.IsCacheEntryValid(cacheEntry, fileInfo))
                     cachedCount++;
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Log.Warning(ex, "Failed to process mod file: {FilePath}", zipFile);
             }
 
         // Save cache after processing
         await cacheService.SaveCacheAsync();
 
-        Log.Information("Processed {Total} mods ({Cached} from cache, {New} computed)", 
+        Log.Information("Processed {Total} mods ({Cached} from cache, {New} computed)",
             processedCount, cachedCount, processedCount - cachedCount);
 
         return localMods;
@@ -57,7 +60,7 @@ public class LocalModScanner(LocalModCacheService cacheService)
         var cacheEntry = cacheService.GetCacheEntry(zipFilePath);
         string? hash = null;
         string? version = null;
-        
+
         if (cacheEntry != null && LocalModCacheService.IsCacheEntryValid(cacheEntry, fileInfo))
         {
             // Use cached values
@@ -68,17 +71,17 @@ public class LocalModScanner(LocalModCacheService cacheService)
         {
             // Extract version from modDesc.xml
             version = await ExtractVersionFromZipAsync(zipFilePath);
-            
+
             // Compute hash if required
             if (hashAlgorithm != "None")
                 hash = await GiantsModHash.ComputeAsync(zipFilePath, modName);
-            
+
             // Update cache
             await cacheService.UpdateCacheEntryAsync(
-                zipFilePath, 
-                fileInfo.Length, 
-                fileInfo.LastWriteTimeUtc, 
-                hash, 
+                zipFilePath,
+                fileInfo.Length,
+                fileInfo.LastWriteTimeUtc,
+                hash,
                 version);
         }
 

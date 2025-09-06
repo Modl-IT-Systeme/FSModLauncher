@@ -4,7 +4,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-FSModLauncher is a WPF desktop application built with .NET 8 targeting Windows. It is a launcher/mod manager for Farming Simulator 25 that compares local mods with server-hosted lists, downloads missing/outdated mods, and launches the game.
+FSModLauncher is a WPF desktop application built with .NET 8 targeting Windows. It is a launcher/mod manager for Farming
+Simulator 25 that compares local mods with server-hosted lists, downloads missing/outdated mods, and launches the game.
 
 ## Architecture
 
@@ -18,6 +19,7 @@ FSModLauncher is a WPF desktop application built with .NET 8 targeting Windows. 
 ## Project Structure
 
 ### Core Folders
+
 - `Models/`: Data models (ServerMod, LocalMod, AppSettings, etc.)
 - `Services/`: Business logic services (ConfigService, DownloadService, etc.)
 - `ViewModels/`: MVVM ViewModels with commands and data binding
@@ -25,6 +27,7 @@ FSModLauncher is a WPF desktop application built with .NET 8 targeting Windows. 
 - `Converters/`: WPF value converters for data binding
 
 ### Key Files
+
 - `FSModLauncher.sln`: Visual Studio solution file
 - `FSModLauncher/FSModLauncher.csproj`: Main project file with .NET 8 and WPF configuration
 - `FSModLauncher/App.xaml` & `App.xaml.cs`: WPF application entry point with global error handling
@@ -52,21 +55,25 @@ FSModLauncher is a WPF desktop application built with .NET 8 targeting Windows. 
 ## Development Commands
 
 ### Build
+
 ```bash
 dotnet build
 ```
 
 ### Run
+
 ```bash
 dotnet run --project FSModLauncher
 ```
 
 ### Build for Release
+
 ```bash
 dotnet build --configuration Release
 ```
 
 ### Restore Dependencies
+
 ```bash
 dotnet restore
 ```
@@ -74,6 +81,7 @@ dotnet restore
 ## Configuration
 
 The application creates configuration at `%APPDATA%\FSModLauncher\settings.json` with:
+
 - **ModsFolder**: Path to FS25 mods directory
 - **GameExePath**: Path to FarmingSimulator25.exe
 - **ServerIp**: IP address of the FS25 dedicated server
@@ -84,6 +92,7 @@ The application creates configuration at `%APPDATA%\FSModLauncher\settings.json`
 - **BackupBeforeOverwrite**: Backup existing mods before update
 
 The ServerIp, ServerPort, and ServerCode are combined to create:
+
 - Server Stats URL: `http://{ServerIp}:{ServerPort}/feed/dedicated-server-stats.xml?code={ServerCode}`
 - CDN Base URL: `http://{ServerIp}:{ServerPort}/mods`
 

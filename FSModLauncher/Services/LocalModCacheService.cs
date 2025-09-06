@@ -57,7 +57,7 @@ public class LocalModCacheService
         try
         {
             _cache.LastUpdated = DateTime.UtcNow;
-            
+
             Directory.CreateDirectory(AppPaths.ConfigDirectory);
 
             var json = JsonConvert.SerializeObject(_cache, Formatting.Indented);
@@ -84,12 +84,13 @@ public class LocalModCacheService
                Math.Abs((cacheEntry.LastModified - fileInfo.LastWriteTimeUtc).TotalSeconds) < 1;
     }
 
-    public async Task UpdateCacheEntryAsync(string filePath, long fileSize, DateTime lastModified, string? hash, string? version)
+    public async Task UpdateCacheEntryAsync(string filePath, long fileSize, DateTime lastModified, string? hash,
+        string? version)
     {
         _cache ??= await LoadCacheAsync();
 
         var fileName = Path.GetFileName(filePath);
-        
+
         _cache.Entries[fileName] = new LocalModCacheEntry
         {
             FileName = fileName,
@@ -112,10 +113,7 @@ public class LocalModCacheService
         var existingFileNames = existingFiles.Select(Path.GetFileName).ToHashSet();
         var keysToRemove = _cache.Entries.Keys.Where(key => !existingFileNames.Contains(key)).ToList();
 
-        foreach (var key in keysToRemove)
-        {
-            _cache.Entries.Remove(key);
-        }
+        foreach (var key in keysToRemove) _cache.Entries.Remove(key);
 
         if (keysToRemove.Any())
         {

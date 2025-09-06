@@ -66,7 +66,8 @@
                         </Grid.ColumnDefinitions>
 
                         <Label Grid.Row="0" Grid.Column="0" Content="Server URL:" VerticalAlignment="Center" />
-                        <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding ServerUrl, UpdateSourceTrigger=PropertyChanged}"
+                        <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3"
+                                 Text="{Binding ServerUrl, UpdateSourceTrigger=PropertyChanged}"
                                  VerticalAlignment="Center" Margin="0,0,10,0"
                                  ToolTip="Paste full server URL here to auto-fill fields below (e.g., http://2.56.245.238:8865/feed/dedicated-server-stats.xml?code=38733ea528e87eb4b7b1d3629712ec5a)" />
                         <Button Grid.Row="0" Grid.Column="4" Content="Parse"
@@ -76,7 +77,7 @@
                         <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding ServerIp}"
                                  VerticalAlignment="Center" Margin="0,0,5,0" />
                         <Label Grid.Row="2" Grid.Column="3" Content="Port:" VerticalAlignment="Center" />
-                        <TextBox Grid.Row="2" Grid.Column="4" Text="{Binding ServerPort}" 
+                        <TextBox Grid.Row="2" Grid.Column="4" Text="{Binding ServerPort}"
                                  VerticalAlignment="Center" />
 
                         <Label Grid.Row="4" Grid.Column="0" Content="API Code:" VerticalAlignment="Center" />

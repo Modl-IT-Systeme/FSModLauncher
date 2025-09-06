@@ -11,6 +11,7 @@ public class DownloadService(int maxConcurrentDownloads = 3)
     {
         Timeout = TimeSpan.FromSeconds(60)
     };
+
     private readonly SemaphoreSlim _semaphore = new(maxConcurrentDownloads, maxConcurrentDownloads);
 
     public async Task<bool> DownloadModAsync(
