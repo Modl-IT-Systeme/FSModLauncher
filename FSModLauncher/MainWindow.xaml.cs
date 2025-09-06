@@ -21,8 +21,9 @@ public partial class MainWindow : Window
     private void InitializeServices()
     {
         var configService = new ConfigService();
+        var cacheService = new LocalModCacheService();
         var serverModService = new ServerModService();
-        var localModScanner = new LocalModScanner();
+        var localModScanner = new LocalModScanner(cacheService);
         var comparerService = new ComparerService();
         var downloadService = new DownloadService();
         var gameLauncherService = new GameLauncherService();
