@@ -39,7 +39,7 @@ FSModLauncher is a WPF desktop application built with .NET 8 targeting Windows. 
 
 ## Features Implemented
 
-1. **Configuration Management**: Settings stored in `%APPDATA%\Fs25ModLauncher\settings.json`
+1. **Configuration Management**: Settings stored in `%APPDATA%\FSModLauncher\settings.json`
 2. **Server Integration**: Fetches mod list from XML endpoint
 3. **Local Mod Scanning**: Scans zip files in mods folder, extracts version from modDesc.xml
 4. **Hash Verification**: Supports MD5, SHA1, or no verification
@@ -73,7 +73,7 @@ dotnet restore
 
 ## Configuration
 
-The application creates configuration at `%APPDATA%\Fs25ModLauncher\settings.json` with:
+The application creates configuration at `%APPDATA%\FSModLauncher\settings.json` with:
 - **ModsFolder**: Path to FS25 mods directory
 - **GameExePath**: Path to FarmingSimulator25.exe
 - **ServerIp**: IP address of the FS25 dedicated server

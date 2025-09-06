@@ -6,28 +6,18 @@ namespace FSModLauncher.Services;
 
 public class ConfigService
 {
-    private readonly string _configDir;
-    private readonly string _configPath;
-
-    public ConfigService()
-    {
-        _configDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            "Fs25ModLauncher");
-        _configPath = Path.Combine(_configDir, "settings.json");
-    }
-
     public async Task<AppSettings> LoadSettingsAsync()
     {
         try
         {
-            if (!File.Exists(_configPath))
+            if (!File.Exists(AppPaths.SettingsFile))
             {
                 var defaultSettings = new AppSettings();
                 await SaveSettingsAsync(defaultSettings);
                 return defaultSettings;
             }
 
-            var json = await File.ReadAllTextAsync(_configPath);
+            var json = await File.ReadAllTextAsync(AppPaths.SettingsFile);
             return JsonConvert.DeserializeObject<AppSettings>(json) ?? new AppSettings();
         }
         catch
@@ -40,9 +30,9 @@ public class ConfigService
     {
         try
         {
-            Directory.CreateDirectory(_configDir);
+            Directory.CreateDirectory(AppPaths.ConfigDirectory);
             var json = JsonConvert.SerializeObject(settings, Formatting.Indented);
-            await File.WriteAllTextAsync(_configPath, json);
+            await File.WriteAllTextAsync(AppPaths.SettingsFile, json);
         }
         catch
         {
@@ -52,6 +42,6 @@ public class ConfigService
 
     public string GetLogsPath()
     {
-        return Path.Combine(_configDir, "logs");
+        return AppPaths.LogsDirectory;
     }
 }

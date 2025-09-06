@@ -7,14 +7,10 @@ namespace FSModLauncher.Services;
 
 public class LocalModCacheService
 {
-    private readonly string _cacheFilePath;
     private LocalModCache? _cache;
 
     public LocalModCacheService()
     {
-        var configDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            "Fs25ModLauncher");
-        _cacheFilePath = Path.Combine(configDir, "mod_cache.json");
     }
 
     public async Task<LocalModCache> LoadCacheAsync()
@@ -24,14 +20,14 @@ public class LocalModCacheService
 
         try
         {
-            if (!File.Exists(_cacheFilePath))
+            if (!File.Exists(AppPaths.ModCacheFile))
             {
                 _cache = new LocalModCache();
                 await SaveCacheAsync();
                 return _cache;
             }
 
-            var json = await File.ReadAllTextAsync(_cacheFilePath);
+            var json = await File.ReadAllTextAsync(AppPaths.ModCacheFile);
             _cache = JsonConvert.DeserializeObject<LocalModCache>(json) ?? new LocalModCache();
 
             // Validate cache version - if version mismatch, reset cache
@@ -62,12 +58,10 @@ public class LocalModCacheService
         {
             _cache.LastUpdated = DateTime.UtcNow;
             
-            var cacheDir = Path.GetDirectoryName(_cacheFilePath);
-            if (cacheDir != null)
-                Directory.CreateDirectory(cacheDir);
+            Directory.CreateDirectory(AppPaths.ConfigDirectory);
 
             var json = JsonConvert.SerializeObject(_cache, Formatting.Indented);
-            await File.WriteAllTextAsync(_cacheFilePath, json);
+            await File.WriteAllTextAsync(AppPaths.ModCacheFile, json);
         }
         catch (Exception ex)
         {
