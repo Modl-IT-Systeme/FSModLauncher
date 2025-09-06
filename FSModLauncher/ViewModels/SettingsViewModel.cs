@@ -18,6 +18,8 @@ public partial class SettingsViewModel : ObservableObject
 
     [ObservableProperty] private int _concurrentDownloads = 3;
 
+    public List<int> ConcurrentDownloadsOptions { get; } = new() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
     [ObservableProperty] private string _gameExePath = "";
 
     [ObservableProperty] private string _hashAlgorithm = "MD5";

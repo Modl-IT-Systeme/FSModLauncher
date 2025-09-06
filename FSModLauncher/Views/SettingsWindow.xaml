@@ -111,19 +111,12 @@
                                   Style="{StaticResource DarkComboBoxStyle}" />
 
                         <Label Grid.Row="2" Grid.Column="0" Content="Concurrent Downloads:" VerticalAlignment="Center" Style="{StaticResource DarkLabelStyle}" />
-                        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
-                            <Slider Name="ConcurrentDownloadsSlider"
-                                    Value="{Binding ConcurrentDownloads}"
-                                    Minimum="1"
-                                    Maximum="10"
-                                    TickFrequency="1"
-                                    IsSnapToTickEnabled="True"
-                                    Width="200"
-                                    Style="{StaticResource DarkSliderStyle}" />
-                            <TextBlock Text="{Binding ElementName=ConcurrentDownloadsSlider, Path=Value}"
-                                       VerticalAlignment="Center"
-                                       Margin="10,0,0,0" />
-                        </StackPanel>
+                        <ComboBox Grid.Row="2" Grid.Column="1"
+                                  ItemsSource="{Binding ConcurrentDownloadsOptions}"
+                                  SelectedItem="{Binding ConcurrentDownloads}"
+                                  Width="80"
+                                  HorizontalAlignment="Left"
+                                  Style="{StaticResource DarkComboBoxStyle}" />
 
                         <CheckBox Grid.Row="4" Grid.Column="1"
                                   Content="Backup files before overwrite"

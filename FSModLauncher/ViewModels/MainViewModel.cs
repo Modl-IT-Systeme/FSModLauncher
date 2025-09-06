@@ -106,9 +106,9 @@ public partial class MainViewModel : ObservableObject
                 localMods,
                 _currentSettings.HashAlgorithm);
 
-            // Update UI - sort to show non-up-to-date mods first
+            // Update UI - sort by priority: Missing, UpdateAvailable, Latest
             Mods.Clear();
-            var sortedResults = comparisonResults.OrderBy(r => r.Status == ModStatus.Latest ? 1 : 0);
+            var sortedResults = comparisonResults.OrderBy(r => r.Status);
             foreach (var result in sortedResults)
             {
                 var modVm = new ModItemViewModel(result);
