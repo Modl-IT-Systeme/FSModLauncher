@@ -4,21 +4,21 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Settings" Height="500" Width="600"
+        Title="Settings" Height="700" Width="600"
         WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+        Background="{StaticResource PrimaryBackgroundBrush}">
 
-    <Grid Margin="20">
+    <Grid Margin="20" Background="{StaticResource PrimaryBackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!-- Settings Content -->
-        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
-            <StackPanel>
+        <StackPanel Grid.Row="0">
                 <!-- Paths Section -->
-                <GroupBox Header="Paths" Margin="0,0,0,15" Padding="15">
+                <GroupBox Header="Paths" Margin="0,0,0,15" Padding="15" Style="{StaticResource DarkGroupBoxStyle}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -33,22 +33,22 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
-                        <Label Grid.Row="0" Grid.Column="0" Content="Mods Folder:" VerticalAlignment="Center" />
+                        <Label Grid.Row="0" Grid.Column="0" Content="Mods Folder:" VerticalAlignment="Center" Style="{StaticResource DarkLabelStyle}" />
                         <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding ModsFolder}" Margin="0,0,10,0"
-                                 VerticalAlignment="Center" />
+                                 VerticalAlignment="Center" Style="{StaticResource DarkTextBoxStyle}" />
                         <Button Grid.Row="0" Grid.Column="2" Content="Browse..."
-                                Command="{Binding BrowseModsFolderCommand}" Width="80" />
+                                Command="{Binding BrowseModsFolderCommand}" Width="80" Style="{StaticResource DarkButtonStyle}" />
 
-                        <Label Grid.Row="2" Grid.Column="0" Content="Game Executable:" VerticalAlignment="Center" />
+                        <Label Grid.Row="2" Grid.Column="0" Content="Game Executable:" VerticalAlignment="Center" Style="{StaticResource DarkLabelStyle}" />
                         <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding GameExePath}" Margin="0,0,10,0"
-                                 VerticalAlignment="Center" />
+                                 VerticalAlignment="Center" Style="{StaticResource DarkTextBoxStyle}" />
                         <Button Grid.Row="2" Grid.Column="2" Content="Browse..."
-                                Command="{Binding BrowseGameExeCommand}" Width="80" />
+                                Command="{Binding BrowseGameExeCommand}" Width="80" Style="{StaticResource DarkButtonStyle}" />
                     </Grid>
                 </GroupBox>
 
                 <!-- Server Section -->
-                <GroupBox Header="Server Configuration" Margin="0,0,0,15" Padding="15">
+                <GroupBox Header="Server Configuration" Margin="0,0,0,15" Padding="15" Style="{StaticResource DarkGroupBoxStyle}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -65,29 +65,30 @@
                             <ColumnDefinition Width="80" />
                         </Grid.ColumnDefinitions>
 
-                        <Label Grid.Row="0" Grid.Column="0" Content="Server URL:" VerticalAlignment="Center" />
+                        <Label Grid.Row="0" Grid.Column="0" Content="Server URL:" VerticalAlignment="Center" Style="{StaticResource DarkLabelStyle}" />
                         <TextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3"
                                  Text="{Binding ServerUrl, UpdateSourceTrigger=PropertyChanged}"
                                  VerticalAlignment="Center" Margin="0,0,10,0"
+                                 Style="{StaticResource DarkTextBoxStyle}"
                                  ToolTip="Paste full server URL here to auto-fill fields below (e.g., http://2.56.245.238:8865/feed/dedicated-server-stats.xml?code=38733ea528e87eb4b7b1d3629712ec5a)" />
                         <Button Grid.Row="0" Grid.Column="4" Content="Parse"
-                                Command="{Binding ParseUrlCommand}" Width="80" />
+                                Command="{Binding ParseUrlCommand}" Style="{StaticResource DarkButtonStyle}" />
 
-                        <Label Grid.Row="2" Grid.Column="0" Content="Server:" VerticalAlignment="Center" />
+                        <Label Grid.Row="2" Grid.Column="0" Content="Server:" VerticalAlignment="Center" Style="{StaticResource DarkLabelStyle}" />
                         <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding ServerIp}"
-                                 VerticalAlignment="Center" Margin="0,0,5,0" />
-                        <Label Grid.Row="2" Grid.Column="3" Content="Port:" VerticalAlignment="Center" />
+                                 VerticalAlignment="Center" Margin="0,0,5,0" Style="{StaticResource DarkTextBoxStyle}" />
+                        <Label Grid.Row="2" Grid.Column="3" Content="Port:" VerticalAlignment="Center" Style="{StaticResource DarkLabelStyle}" />
                         <TextBox Grid.Row="2" Grid.Column="4" Text="{Binding ServerPort}"
-                                 VerticalAlignment="Center" />
+                                 VerticalAlignment="Center" Style="{StaticResource DarkTextBoxStyle}" />
 
-                        <Label Grid.Row="4" Grid.Column="0" Content="API Code:" VerticalAlignment="Center" />
+                        <Label Grid.Row="4" Grid.Column="0" Content="API Code:" VerticalAlignment="Center" Style="{StaticResource DarkLabelStyle}" />
                         <TextBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="4" Text="{Binding ServerCode}"
-                                 VerticalAlignment="Center" />
+                                 VerticalAlignment="Center" Style="{StaticResource DarkTextBoxStyle}" />
                     </Grid>
                 </GroupBox>
 
                 <!-- Download Options -->
-                <GroupBox Header="Download Options" Margin="0,0,0,15" Padding="15">
+                <GroupBox Header="Download Options" Margin="0,0,0,15" Padding="15" Style="{StaticResource DarkGroupBoxStyle}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -101,14 +102,15 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <Label Grid.Row="0" Grid.Column="0" Content="Hash Algorithm:" VerticalAlignment="Center" />
+                        <Label Grid.Row="0" Grid.Column="0" Content="Hash Algorithm:" VerticalAlignment="Center" Style="{StaticResource DarkLabelStyle}" />
                         <ComboBox Grid.Row="0" Grid.Column="1"
                                   ItemsSource="{Binding HashAlgorithmOptions}"
                                   SelectedItem="{Binding HashAlgorithm}"
                                   Width="100"
-                                  HorizontalAlignment="Left" />
+                                  HorizontalAlignment="Left"
+                                  Style="{StaticResource DarkComboBoxStyle}" />
 
-                        <Label Grid.Row="2" Grid.Column="0" Content="Concurrent Downloads:" VerticalAlignment="Center" />
+                        <Label Grid.Row="2" Grid.Column="0" Content="Concurrent Downloads:" VerticalAlignment="Center" Style="{StaticResource DarkLabelStyle}" />
                         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
                             <Slider Name="ConcurrentDownloadsSlider"
                                     Value="{Binding ConcurrentDownloads}"
@@ -116,7 +118,8 @@
                                     Maximum="10"
                                     TickFrequency="1"
                                     IsSnapToTickEnabled="True"
-                                    Width="200" />
+                                    Width="200"
+                                    Style="{StaticResource DarkSliderStyle}" />
                             <TextBlock Text="{Binding ElementName=ConcurrentDownloadsSlider, Path=Value}"
                                        VerticalAlignment="Center"
                                        Margin="10,0,0,0" />
@@ -124,31 +127,17 @@
 
                         <CheckBox Grid.Row="4" Grid.Column="1"
                                   Content="Backup files before overwrite"
-                                  IsChecked="{Binding BackupBeforeOverwrite}" />
+                                  IsChecked="{Binding BackupBeforeOverwrite}"
+                                  Style="{StaticResource DarkCheckBoxStyle}" />
                     </Grid>
                 </GroupBox>
-
-                <!-- Help Text -->
-                <TextBlock TextWrapping="Wrap" FontSize="11" Foreground="Gray" Margin="0,10,0,0">
-                    <Run
-                        Text="• Mods Folder: Location where FS25 mods are stored (usually in Documents/My Games/FarmingSimulator25/mods)" />
-                    <LineBreak />
-                    <Run Text="• Game Executable: Path to FarmingSimulator25.exe" />
-                    <LineBreak />
-                    <Run Text="• Server: IP address and port of the FS25 dedicated server (e.g., 192.168.1.100:8080)" />
-                    <LineBreak />
-                    <Run Text="• API Code: Authentication code for accessing server statistics" />
-                    <LineBreak />
-                    <Run Text="• Hash Algorithm: Method for verifying downloaded files (None disables verification)" />
-                </TextBlock>
-            </StackPanel>
-        </ScrollViewer>
+        </StackPanel>
 
         <!-- Buttons -->
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
             <Button Content="Save" Command="{Binding SaveSettingsCommand}" Click="SaveButton_Click" Width="80"
-                    Height="30" Margin="0,0,10,0" />
-            <Button Content="Cancel" Click="CancelButton_Click" Width="80" Height="30" />
+                    Height="32" Margin="0,0,10,0" Style="{StaticResource DarkButtonStyle}" />
+            <Button Content="Cancel" Click="CancelButton_Click" Width="80" Height="32" Style="{StaticResource DarkButtonStyle}" />
         </StackPanel>
     </Grid>
 </Window>
