@@ -1,0 +1,112 @@
+﻿<UserControl x:Class="FSModLauncher.Views.SettingsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="http://schemas.modernwpf.com/2019"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="800">
+
+    <ScrollViewer Margin="24">
+        <StackPanel MaxWidth="600">
+            <TextBlock Text="Settings" FontSize="28" FontWeight="SemiBold" Margin="0,0,0,24"/>
+            
+            <!-- Paths Section -->
+            <GroupBox Header="Paths" Margin="0,0,0,24">
+                <StackPanel Margin="0,16,0,0">
+                    <StackPanel>
+                        <TextBlock Text="Mods Folder:" Margin="0,0,0,4" FontWeight="Medium" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0" Text="{Binding ModsFolder}" Margin="0,0,10,0" />
+                            <Button Grid.Column="1" Content="Browse..." Command="{Binding BrowseModsFolderCommand}" Width="80" />
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Margin="0,16,0,0">
+                        <TextBlock Text="Game Executable:" Margin="0,0,0,4" FontWeight="Medium" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0" Text="{Binding GameExePath}" Margin="0,0,10,0" />
+                            <Button Grid.Column="1" Content="Browse..." Command="{Binding BrowseGameExeCommand}" Width="80" />
+                        </Grid>
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+
+            <!-- Server Section -->
+            <GroupBox Header="Server Configuration" Margin="0,0,0,24">
+                <StackPanel Margin="0,16,0,0">
+                    <StackPanel>
+                        <TextBlock Text="Server URL:" Margin="0,0,0,4" FontWeight="Medium" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0" Text="{Binding ServerUrl, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,10,0"
+                                     ui:ControlHelper.PlaceholderText="Paste full server URL here to auto-fill fields below" />
+                            <Button Grid.Column="1" Content="Parse" Command="{Binding ParseUrlCommand}" Width="80" />
+                        </Grid>
+                    </StackPanel>
+
+                    <Grid Margin="0,16,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="16" />
+                            <ColumnDefinition Width="120" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Server IP:" Margin="0,0,0,4" FontWeight="Medium" />
+                            <TextBox Text="{Binding ServerIp}" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Port:" Margin="0,0,0,4" FontWeight="Medium" />
+                            <TextBox Text="{Binding ServerPort}" />
+                        </StackPanel>
+                    </Grid>
+
+                    <StackPanel Margin="0,16,0,0">
+                        <TextBlock Text="API Code:" Margin="0,0,0,4" FontWeight="Medium" />
+                        <TextBox Text="{Binding ServerCode}" />
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+
+            <!-- Download Options -->
+            <GroupBox Header="Download Options" Margin="0,0,0,24">
+                <StackPanel Margin="0,16,0,0">
+                    <StackPanel>
+                        <TextBlock Text="Hash Algorithm:" Margin="0,0,0,4" FontWeight="Medium" />
+                        <ComboBox ItemsSource="{Binding HashAlgorithmOptions}"
+                                  SelectedItem="{Binding HashAlgorithm}"
+                                  Width="120" HorizontalAlignment="Left" />
+                    </StackPanel>
+
+                    <StackPanel Margin="0,16,0,0">
+                        <TextBlock Text="Concurrent Downloads:" Margin="0,0,0,4" FontWeight="Medium" />
+                        <ComboBox ItemsSource="{Binding ConcurrentDownloadsOptions}"
+                                  SelectedItem="{Binding ConcurrentDownloads}"
+                                  Width="80" HorizontalAlignment="Left" />
+                    </StackPanel>
+
+                    <ui:ToggleSwitch Header="Backup files before overwrite"
+                                    IsOn="{Binding BackupBeforeOverwrite}"
+                                    Margin="0,16,0,0" />
+                </StackPanel>
+            </GroupBox>
+
+            <!-- Save Button -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,24,0,0">
+                <Button Content="Save Settings" Command="{Binding SaveSettingsCommand}" Click="SaveButton_Click" 
+                        Style="{DynamicResource AccentButtonStyle}" Padding="16,8" />
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

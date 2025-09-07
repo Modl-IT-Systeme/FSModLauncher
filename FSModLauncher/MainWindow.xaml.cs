@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
+using ModernWpf.Controls;
 using FSModLauncher.Services;
 using FSModLauncher.ViewModels;
 using FSModLauncher.Views;
@@ -10,10 +12,17 @@ namespace FSModLauncher;
 /// </summary>
 public partial class MainWindow : Window
 {
+    private SettingsPage? _settingsPage;
+    private SettingsViewModel? _settingsViewModel;
+
     public MainWindow()
     {
         InitializeComponent();
         InitializeServices();
+        
+        // Set the default selection for NavigationView and show Mod Manager page
+        NavigationViewControl.SelectedItem = NavigationViewControl.MenuItems[0];
+        ShowModManagerPage();
     }
 
     public MainViewModel ViewModel => (MainViewModel)DataContext;
@@ -41,19 +50,6 @@ public partial class MainWindow : Window
         Loaded += async (s, e) => await mainViewModel.InitializeAsync();
     }
 
-    private async void SettingsButton_Click(object sender, RoutedEventArgs e)
-    {
-        var configService = new ConfigService();
-        var settingsViewModel = new SettingsViewModel(configService);
-        await settingsViewModel.LoadSettingsAsync();
-
-        var settingsWindow = new SettingsWindow(settingsViewModel)
-        {
-            Owner = this
-        };
-
-        if (settingsWindow.ShowDialog() == true) await ViewModel.RefreshSettingsAsync();
-    }
 
     // Custom window chrome event handlers
     private void TitleBar_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -83,5 +79,46 @@ public partial class MainWindow : Window
     private void CloseButton_Click(object sender, RoutedEventArgs e)
     {
         Close();
+    }
+
+    private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+    {
+        if (args.SelectedItem is NavigationViewItem item)
+        {
+            var tag = item.Tag?.ToString();
+            switch (tag)
+            {
+                case "ModManager":
+                    ShowModManagerPage();
+                    break;
+                case "Settings":
+                    ShowSettingsPage();
+                    break;
+            }
+        }
+    }
+
+    private void ShowModManagerPage()
+    {
+        ContentPresenter.Content = null;
+        ModManagerPage.Visibility = Visibility.Visible;
+    }
+
+    private async void ShowSettingsPage()
+    {
+        ModManagerPage.Visibility = Visibility.Collapsed;
+        
+        if (_settingsPage == null)
+        {
+            var configService = new ConfigService();
+            _settingsViewModel = new SettingsViewModel(configService);
+            await _settingsViewModel.LoadSettingsAsync();
+            
+            _settingsPage = new SettingsPage();
+            _settingsPage.DataContext = _settingsViewModel;
+            _settingsPage.SettingsSaved += async (s, e) => await ViewModel.RefreshSettingsAsync();
+        }
+        
+        ContentPresenter.Content = _settingsPage;
     }
 }
