@@ -8,12 +8,14 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <UseWPF>true</UseWPF>
         <ApplicationIcon>..\icon.ico</ApplicationIcon>
+        <AssemblyVersion>1.0.5</AssemblyVersion>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
         <PackageReference Include="ModernWpfUI" Version="0.9.6" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="Octokit" Version="14.0.0" />
         <PackageReference Include="Serilog" Version="4.1.0" />
         <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
     </ItemGroup>

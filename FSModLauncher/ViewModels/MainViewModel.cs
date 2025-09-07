@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FSModLauncher.Models;
 using FSModLauncher.Services;
+using FSModLauncher.Views;
 using Serilog;
 
 namespace FSModLauncher.ViewModels;
@@ -17,6 +18,7 @@ public partial class MainViewModel : ObservableObject
     private readonly GameLauncherService _gameLauncherService;
     private readonly LocalModScanner _localModScanner;
     private readonly ServerModService _serverModService;
+    private readonly UpdateService _updateService;
 
     private AppSettings? _currentSettings;
 
@@ -32,13 +34,20 @@ public partial class MainViewModel : ObservableObject
 
     [ObservableProperty] private string _statusMessage = "Ready";
 
+    [ObservableProperty] private bool _updateAvailable;
+
+    [ObservableProperty] private string _updateVersion = "";
+
+    [ObservableProperty] private bool _checkingForUpdates;
+
     public MainViewModel(
         ConfigService configService,
         ServerModService serverModService,
         LocalModScanner localModScanner,
         ComparerService comparerService,
         DownloadService downloadService,
-        GameLauncherService gameLauncherService)
+        GameLauncherService gameLauncherService,
+        UpdateService updateService)
     {
         _configService = configService;
         _serverModService = serverModService;
@@ -46,6 +55,7 @@ public partial class MainViewModel : ObservableObject
         _comparerService = comparerService;
         _downloadService = downloadService;
         _gameLauncherService = gameLauncherService;
+        _updateService = updateService;
     }
 
     public async Task InitializeAsync()
@@ -66,6 +76,9 @@ public partial class MainViewModel : ObservableObject
 
         // Automatically check mods on startup
         await CheckMods();
+        
+        // Check for updates in the background
+        _ = Task.Run(async () => await CheckForUpdatesAsync());
     }
 
     private async Task LoadSettingsAsync()
@@ -285,6 +298,59 @@ public partial class MainViewModel : ObservableObject
     public async Task RefreshSettingsAsync()
     {
         await LoadSettingsAsync();
+    }
+
+    [RelayCommand]
+    private async Task CheckForUpdates()
+    {
+        await CheckForUpdatesAsync();
+    }
+
+    [RelayCommand]
+    private async Task ShowUpdateDialog()
+    {
+        var latestRelease = await _updateService.GetLatestReleaseAsync();
+        if (latestRelease == null) return;
+
+        var currentVersion = _updateService.GetCurrentVersion();
+        
+        var updateDialog = new UpdateDialog();
+        var updateViewModel = new UpdateDialogViewModel();
+        updateViewModel.Initialize(latestRelease, currentVersion);
+        updateDialog.DataContext = updateViewModel;
+        
+        // Show dialog - we'll need to get the parent window
+        updateDialog.Owner = System.Windows.Application.Current.MainWindow;
+        updateDialog.ShowDialog();
+    }
+
+    private async Task CheckForUpdatesAsync()
+    {
+        if (CheckingForUpdates) return;
+
+        CheckingForUpdates = true;
+        try
+        {
+            Log.Information("Checking for application updates");
+            var isUpdateAvailable = await _updateService.IsUpdateAvailableAsync();
+            
+            UpdateAvailable = isUpdateAvailable;
+            if (isUpdateAvailable)
+            {
+                var latestRelease = await _updateService.GetLatestReleaseAsync();
+                UpdateVersion = latestRelease?.TagName ?? "Unknown";
+                Log.Information("Update available: {Version}", UpdateVersion);
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Failed to check for updates");
+            UpdateAvailable = false;
+        }
+        finally
+        {
+            CheckingForUpdates = false;
+        }
     }
 
     private async void OnModDownloadRequested(object? sender, ModItemViewModel modViewModel)

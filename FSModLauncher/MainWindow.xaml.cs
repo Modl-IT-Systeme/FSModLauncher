@@ -36,6 +36,7 @@ public partial class MainWindow : Window
         var comparerService = new ComparerService();
         var downloadService = new DownloadService();
         var gameLauncherService = new GameLauncherService();
+        var updateService = new UpdateService();
 
         var mainViewModel = new MainViewModel(
             configService,
@@ -43,7 +44,8 @@ public partial class MainWindow : Window
             localModScanner,
             comparerService,
             downloadService,
-            gameLauncherService);
+            gameLauncherService,
+            updateService);
 
         DataContext = mainViewModel;
 
